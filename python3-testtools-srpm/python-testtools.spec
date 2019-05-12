@@ -33,7 +33,7 @@ BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-extras
 BuildRequires:  python%{python3_pkgversion}-mimeparse
 BuildRequires:  python%{python3_pkgversion}-setuptools
-#BuildRequires:  python%{python3_pkgversion}-sphinx
+#BuildRequires:  python%%{python3_pkgversion}-sphinx
 %endif
 
 %description
