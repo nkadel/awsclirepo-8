@@ -4,7 +4,7 @@
 # This is an epel-only package.
 # We want python3*-dateutil in EPEL, but the original package is in RHEL.
 # This was forked from the latest python-dateutil in rawhide on 2016-07-27.
-Name:           python3-dateutil
+Name:           python%{python3_pkgversion}-dateutil
 Version:        2.4.2
 Release:        5%{?dist}
 Epoch:          1
@@ -17,25 +17,14 @@ Source0:        https://github.com/dateutil/dateutil/archive/%{version}.tar.gz
 # https://github.com/dateutil/dateutil/issues/11
 Patch0:         python-dateutil-system-zoneinfo.patch
 Patch1:         python-dateutil-timelex-string.patch
-
-BuildArch:      noarch
-
-%description
-The dateutil module provides powerful extensions to the standard datetime
-module available in Python 2.3+.
-
-This is the version for Python 3.
-
-%package -n python%{python3_pkgversion}-dateutil
-Summary:        Powerful extensions to the standard datetime module
 BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-setuptools
 BuildRequires:  python%{python3_pkgversion}-six
-
 Requires:       python%{python3_pkgversion}-six
 Requires:       tzdata
+BuildArch:      noarch
 
-%description -n python%{python3_pkgversion}-dateutil
+%description
 The dateutil module provides powerful extensions to the standard datetime
 module available in Python 2.3+.
 
@@ -62,7 +51,7 @@ mv NEWS.new NEWS
 %check
 %{__python3} setup.py test
 
-%files -n python%{python3_pkgversion}-dateutil
+%files
 %{!?_licensedir:%global license %doc} 
 %license LICENSE
 %doc NEWS README.rst
@@ -71,7 +60,8 @@ mv NEWS.new NEWS
 
 %changelog
 * Mon Apr 29 2019 Nico Kadel-Garcia <nkadel@gmail.com> - 1:2.4.2-0
-- Discard otherversion
+- Discard other versions
+- Clean up multiple package -n settings to be only python3 version
 
 * Thu Mar 07 2019 Troy Dawson <tdawson@redhat.com>
 - Rebuilt to change main python from 3.4 to 3.6
