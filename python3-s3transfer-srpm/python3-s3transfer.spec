@@ -12,7 +12,7 @@
 
 # Use pkgversion for package name, because this is repackaged
 # for RHEL 6 where python 2.6 does not work
-Name:           python3-%{pypi_name}
+Name:           python%{python3_pkgversion}-%{pypi_name}
 Version:        0.1.13
 Release:        0%{?dist}
 Summary:        An Amazon S3 Transfer Manager
@@ -25,31 +25,37 @@ BuildRequires:  python%{python3_pkgversion}
 BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-setuptools
 %if %{with tests}
-BuildRequires:  python%{python3_pkgversion}-nose
-BuildRequires:  python%{python3_pkgversion}-mock
-BuildRequires:  python%{python3_pkgversion}-wheel
 BuildRequires:  python%{python3_pkgversion}-botocore
-BuildRequires:  python%{python3_pkgversion}-coverage
+BuildRequires:  python%{python3_pkgversion}-mock
+BuildRequires:  python%{python3_pkgversion}-nose
 BuildRequires:  python%{python3_pkgversion}-unittest2
+BuildRequires:  python%{python3_pkgversion}-wheel
+# RHEL 8 added an unwelcome name change, and discarded python2
+%if 0%{?rhel} == 8
+BuildRequires:  platform-python-coverage
+%else
+BuildRequires:  python%{python3_pkgversion}-coverage
+%endif
 %endif # tests
 # Explicitly needed for RHEL 6
 BuildRequires:  python3-rpm-macros
 
-%package -n python%{python3_pkgversion}-%{pypi_name} 
-Summary:        An Amazon S3 Transfer Manager
-# Compiled specifically for python3
+# Keep here, not in with_python3
 Conflicts:	python2-%{pypi_name}
 Conflicts:	python-%{pypi_name}
 Requires:       python%{python3_pkgversion}-botocore
 %{?python_provide:%python_provide python%{python3_pkgversion}-%{pypi_name}}
 
-%files -n python%{python3_pkgversion}-%{pypi_name} 
+#%%package -n python%%{python3_pkgversion}-%%{pypi_name} 
+#Summary:        An Amazon S3 Transfer Manager
+## Compiled specifically for python3
+#Conflicts:	python2-%%{pypi_name}
+#Conflicts:	python-%%{pypi_name}
+#Requires:       python%%{python3_pkgversion}-botocore
+#%%{?python_provide:%%python_provide python%%{python3_pkgversion}-%%{pypi_name}}
 
 
 %description
-S3transfer is a Python library for managing Amazon S3 transfers.
-
-%description -n python%{python3_pkgversion}-%{pypi_name} 
 S3transfer is a Python library for managing Amazon S3 transfers.
 
 %prep
