@@ -51,9 +51,9 @@ configuration files to object serialization and persistance.
 %package -n python2-%{pypi_name}
 Summary: YAML parser and emitter for Python
 Group: Development/Libraries
-#Provides:       python2-yaml = %{version}-%{release}
-#Provides:       python2-yaml%{?_isa} = %{version}-%{release}
-%{?python_provide:%python_provide python2-yaml}
+#Provides:       python2-yaml = %%{version}-%%{release}
+#Provides:       python2-yaml%%{?_isa} = %%{version}-%%{release}
+%{?python_provide:%python_provide python2-%{pypi_name}}
 # Due to misnaming as "PyYAML" in RHEL
 Provides: PyYAML = %{version}-%{release}
 Conflicts: PyYAML
@@ -78,7 +78,7 @@ Summary: YAML parser and emitter for Python
 Group: Development/Libraries
 #Provides:       python%{python3_pkgversion}-yaml = %{version}-%{release}
 #Provides:       python%{python3_pkgversion}-yaml%{?_isa} = %{version}-%{release}
-%{?python_provide:%python_provide python%{python3_pkgversion}-yaml}
+%{?python_provide:%python_provide python%{python3_pkgversion}-%{pypi_name}}
 
 %description -n python%{python3_pkgversion}-%{pypi_name}
 YAML is a data serialization format designed for human readability and
