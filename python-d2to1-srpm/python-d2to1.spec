@@ -9,7 +9,7 @@
 Name: python-%{upname}
 Version: 0.2.10
 #Release: 1%%{?dist}
-Release: 0%{?dist}
+Release: 0.1%{?dist}
 Summary: Allows using distutils2-like setup.cfg files with setup.py
 License: BSD
 
@@ -30,7 +30,7 @@ with a distribute/setuptools setup.py script. It works by providing a
 distutils2-formatted setup.cfg file containing all of a package's metadata, 
 and a very minimal setup.py which will slurp its arguments from the setup.cfg.
 
-%if 0%{?with_python3}
+%if %{with_python3}
 %package -n python%{python3_pkgversion}-d2to1
 Summary: Allows using distutils2-like setup.cfg files with setup.py
 BuildRequires:  python%{python3_pkgversion}-devel
@@ -57,18 +57,18 @@ for file in \
     sed -i.bak  's|http://pypi.python.org/|https://pypi.python.org/|g' $file
 done
 
-%if 0%{?with_python3}
+%if %{with_python3}
 rm -rf %{py3dir}
 cp -a . %{py3dir}
 find %{py3dir} -name '*.py' | xargs sed -i '1s|^#!python|#!%{__python3}|'
 %endif # with_python3
 
-find -name '*.py' | xargs sed -i '1s|^#!python|#!%{__python}|'
+find -name '*.py' | xargs sed -i '1s|^#!python|#!%{__python2}|'
 
 %build
-%{__python} setup.py build
+%{__python2} setup.py build
 
-%if 0%{?with_python3}
+%if %{with_python3}
 pushd %{py3dir}
 %{__python3} setup.py build
 popd
@@ -77,19 +77,19 @@ popd
 %install
 rm -rf %{buildroot}
 
-%if 0%{?with_python3}
+%if %{with_python3}
 pushd %{py3dir}
 %{__python3} setup.py install -O1 --skip-build --root  %{buildroot}
 popd
 %endif # with_python3
 
-%{__python} setup.py install -O1 --skip-build --root  %{buildroot}
+%{__python2} setup.py install -O1 --skip-build --root  %{buildroot}
 
 %files
 %doc CHANGES.rst CONTRIBUTORS LICENSE README.rst
 %{python_sitelib}/*
 
-%if 0%{?with_python3}
+%if %{with_python3}
 %files -n python%{python3_pkgversion}-d2to1
 %doc CHANGES.rst CONTRIBUTORS LICENSE README.rst
 %{python3_sitelib}/*
@@ -97,6 +97,9 @@ popd
 
 
 %changelog
+* Sat May 11 2019 Nico Kadel-Garcia <nkadel@gmail.com> - 0.2.10-0.1
+- Change __python to __python2
+
 * Mon Apr 29 2019 Nico Kadel-Garcia <nkadel@gmail.com> - 0.2.10-0
 - Enable python3 by default, use python3_pkgversion
 - Change URL for downloaded distribute module to use https://
