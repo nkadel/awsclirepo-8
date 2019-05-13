@@ -39,7 +39,7 @@ BuildRequires:  python2-devel
 BuildRequires:  python2-setuptools
 %if %{with docs}
 BuildRequires:  python2-sphinx
-BuildRequires:  python-guzzle_sphinx_theme
+BuildRequires:  python2-guzzle_sphinx_theme
 %endif # with docs
 %if %{with tests}
 %{?fc23:BuildRequires: mock}
