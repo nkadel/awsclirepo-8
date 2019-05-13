@@ -11,7 +11,8 @@
 %global pypi_name PyYAML
 
 #Name:           PyYAML
-Name:           python-%{pypi_name}
+#Name:           python-%%{pypi_name}
+Name:           python-pyyaml
 Version:        3.10
 #Release:        11%%{?dist}
 Release:        0%{?dist}
@@ -21,14 +22,22 @@ Group:          Development/Libraries
 License:        MIT
 URL:            http://pyyaml.org/
 Source0:        http://pyyaml.org/download/pyyaml/%{pypi_name}-%{version}.tar.gz
-BuildRequires:  libyaml-devel, Cython
+BuildRequires:  libyaml-devel
+#BuildRequires:  Cython
 %if %{with_python2}
 BuildRequires:  python2-devel
 BuildRequires:  python2-setuptools
+%if 0%{?rhel} == 6
+# RHEL 6 has it misnamed
+BuildRequires:  Cython
+%else
+BuildRequires:  python2-Cython
+%endif
 %endif # with_python2
 %if %{with_python3}
 BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-setuptools
+BuildRequires:  python%{python3_pkgversion}-Cython
 %endif # with_python3
 
 # http://pyyaml.org/ticket/247
@@ -48,7 +57,7 @@ PyYAML is applicable for a broad range of tasks from complex
 configuration files to object serialization and persistance.
 
 %if %{with_python2}
-%package -n python2-%{pypi_name}
+%package -n python2-pyyaml
 Summary: YAML parser and emitter for Python
 Group: Development/Libraries
 #Provides:       python2-yaml = %%{version}-%%{release}
@@ -56,9 +65,12 @@ Group: Development/Libraries
 %{?python_provide:%python_provide python2-%{pypi_name}}
 # Due to misnaming as "PyYAML" in RHEL
 Provides: PyYAML = %{version}-%{release}
+Provides: python2-pyyaml = %{version}-%{release}
 Conflicts: PyYAML
+Conflicts: python2-PyYAML
+Obsoletes: python2-PyYAML < %{version}-%{release}
 
-%description -n python2-%{pypi_name}
+%description -n python2-pyyaml
 YAML is a data serialization format designed for human readability and
 interaction with scripting languages.  PyYAML is a YAML parser and
 emitter for Python.
@@ -73,14 +85,19 @@ configuration files to object serialization and persistance.
 %endif # with_python2
 
 %if %{with_python3}
-%package -n python%{python3_pkgversion}-%{pypi_name}
+%package -n python%{python3_pkgversion}-pyyaml
 Summary: YAML parser and emitter for Python
 Group: Development/Libraries
-#Provides:       python%{python3_pkgversion}-yaml = %{version}-%{release}
-#Provides:       python%{python3_pkgversion}-yaml%{?_isa} = %{version}-%{release}
+#Provides:       python%%{python3_pkgversion}-yaml = %%{version}-%%{release}
+#Provides:       python%%{python3_pkgversion}-yaml%%{?_isa} = %%{version}-%%{release}
 %{?python_provide:%python_provide python%{python3_pkgversion}-%{pypi_name}}
+Provides: PyYAML = %{version}-%{release}
+Provides: python%{python3_pkgversion}-pyyaml = %{version}-%{release}
+Conflicts: PyYAML
+Conflicts: python%{python3_pkgversion}-PyYAML
+Obsoletes: python%{python3_pkgversion}-PyYAML < %{version}-%{release}
 
-%description -n python%{python3_pkgversion}-%{pypi_name}
+%description -n python%{python3_pkgversion}-pyyaml
 YAML is a data serialization format designed for human readability and
 interaction with scripting languages.  PyYAML is a YAML parser and
 emitter for Python.
@@ -131,7 +148,7 @@ popd
 
 %check
 %if %{with_python2}
-%{__python} setup.py test
+%{__python2} setup.py test
 %endif
 
 %if %{?with_python3}
@@ -143,30 +160,30 @@ popd
 %%clean
 rm -rf %{buildroot}
 
-%files -n python2-%{pypi_name}
-%defattr(644,root,root,755)
-%doc CHANGES LICENSE PKG-INFO README examples
-%{python2_sitearch}/*
-%{python3_sitearch}/*
-
 %if %{with_python2}
-%files -n python2-%{pypi_name}
+%files -n python2-pyyaml
 %defattr(644,root,root,755)
 %doc CHANGES LICENSE PKG-INFO README examples
 %{python2_sitearch}/*
 %endif # with_python2
 
 %if %{with_python3}
-%files -n python%{python3_pkgversion}-%{pypi_name}
+%files -n python%{python3_pkgversion}-pyyaml
 %defattr(644,root,root,755)
 %doc CHANGES LICENSE PKG-INFO README examples
 %{python3_sitearch}/*
 %endif # with_python3
 
-
 %changelog
+* Sun May 12 2019 Nico Kadel-Garcia <nkadel@gmail.com> - 3.10-0.1
+- Switch package name to python-pyyaml, with Conflicts and Provides
+  for old names
+
 * Mon Apr 29 2019 Nico Kadel-Garcia <nkadel@gmail.com> - 3.10-0
 - Split to python2-PyYAML and python34-PyYAML, blocking PyYAML
+- Add Conflicts for consistency with RHEL 6 and RHEL 8
+- Eliminate duplicate python2 and python3 in shared package
+- Add distinct dependencies for python-Cython
 
 * Fri Jan 24 2014 Daniel Mach <dmach@redhat.com> - 3.10-11
 - Mass rebuild 2014-01-24
