@@ -9,7 +9,7 @@
 Name:           python-%{pypi_name}
 Version:        0.3.14
 #Release:        3%%{?dist}
-Release:        0%{?dist}
+Release:        0.1%{?dist}
 Summary:        Fixtures, reusable state for writing clean tests and more
 
 License:        ASL 2.0 or BSD
@@ -56,13 +56,12 @@ cp -a . %{py3dir}
 
 
 %build
-%{__python} setup.py build
+%{__python2} setup.py build
 %if 0%{?with_python3}
 pushd %{py3dir}
 %{__python3} setup.py build
 popd
 %endif # with_python3
-
 
 %install
 %if 0%{?with_python3}
@@ -70,13 +69,12 @@ pushd %{py3dir}
 %{__python3} setup.py install --skip-build --root %{buildroot}
 popd
 %endif
-%{__python} setup.py install --skip-build --root %{buildroot}
-
+%{__python2} setup.py install --skip-build --root %{buildroot}
 
 %files
 %doc README GOALS NEWS Apache-2.0 BSD COPYING
-%{python_sitelib}/%{pypi_name}
-%{python_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
+%{python2_sitelib}/%{pypi_name}
+%{python2_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
 
 %if 0%{?with_python3}
 %files -n python%{python3_pkgversion}-%{pypi_name}
@@ -86,6 +84,9 @@ popd
 %endif
 
 %changelog
+* Sun May 12 2019 Nico Kadel-Garcia <nkadel@gmail.com> - 0.3.14-0.1
+- Switch __python to __python2 for RHEL 8 compatibility
+
 * Mon Apr 29 2019 Nico Kadel-Garcia <nkadel@gmail.com> - 0.3.14-0
 - Backport to RHEL 6 with python3_pkgversion
 
@@ -107,7 +108,7 @@ popd
 * Thu Feb 14 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.3.12-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_19_Mass_Rebuild
 
-* Wed Jan  1 2013 Pádraig Brady <P@draigBrady.com> - 0.3.12-1
+* Wed Jan  2 2013 Pádraig Brady <P@draigBrady.com> - 0.3.12-1
 - Update to 0.3.12
 
 * Fri Nov 16 2012 Pádraig Brady <P@draigBrady.com> - 0.3.9-4
