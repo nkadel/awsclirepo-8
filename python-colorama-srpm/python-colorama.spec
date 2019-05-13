@@ -2,6 +2,7 @@
 %{!?python3_pkgversion:%global python3_pkgversion 3}
 
 %global with_python3 1
+%global with_python2 1
 
 %global pypi_name colorama
 
@@ -16,7 +17,12 @@ URL:            http://pypi.python.org/pypi/colorama/
 Source0:        http://pypi.python.org/packages/source/c/%{pypi_name}/%{pypi_name}-%{version}.tar.gz
 BuildArch:      noarch
  
+%if %{with_python2}
 BuildRequires:  python2-devel
+%endif
+%if %{with_python3}
+BuildRequires: python%{python3_pkgversion}-devel
+%endif
 
 %description
 Makes ANSI escape character sequences, for producing colored
@@ -29,14 +35,29 @@ It also provides some shortcuts to help generate ANSI sequences, and works fine
 in conjunction with any other ANSI sequence generation library, such as
 Termcolor.
 
+%if 0%{?with_python2}
+%package -n python2-%{pypi_name}
+Summary:       Cross-platform colored terminal text
+Requires:      python2
+%{?python_provide:%python_provide python2-%{pypi_name}}
 
+%description -n python2-%{pypi_name}
+Makes ANSI escape character sequences, for producing colored
+terminal text and cursor positioning, work under MS Windows.
 
-%if 0%{?with_python3}
+ANSI escape character sequences have long been used to produce colored terminal
+text and cursor positioning on Unix and Macs. Colorama makes this work on
+Windows, too.
+It also provides some shortcuts to help generate ANSI sequences, and works fine
+in conjunction with any other ANSI sequence generation library, such as
+Termcolor.
+%endif # with_python2
+
+%if %{with_python3}
 %package -n python%{python3_pkgversion}-%{pypi_name}
-Summary:        Cross-platform colored terminal text
-
+Summary:       Cross-platform colored terminal text
 Requires:      python%{python3_pkgversion}
-BuildRequires: python%{python3_pkgversion}-devel
+%{?python_provide:%python_provide python%{python3_pkgversion}-%{pypi_name}}
 
 %description -n python%{python3_pkgversion}-%{pypi_name}
 Makes ANSI escape character sequences, for producing colored
@@ -48,12 +69,7 @@ Windows, too.
 It also provides some shortcuts to help generate ANSI sequences, and works fine
 in conjunction with any other ANSI sequence generation library, such as
 Termcolor.
-
-
-
 %endif
-
-
 
 %prep
 %setup -q -n %{pypi_name}-%{version}
@@ -61,40 +77,44 @@ Termcolor.
 # remove bundled egg-info
 rm -rf %{pypi_name}.egg-info
 
-%if 0%{?with_python3}
+%if %{with_python3}
 cp -a . %{py3dir}
 %endif
 
-
 %build
-%{__python} setup.py build
+%if %{with_python2}
+%{py2_build}
+%endif
 
-%if 0%{?with_python3}
+%if %{with_python3}
 pushd %{py3dir}
-%{__python3} setup.py build
+%{py3_build}
 popd
 %endif # with_python3
-
 
 %install
-%{__python} setup.py install --skip-build --root %{buildroot}
+%if %{with_python2}
+%{py2_install}
+%endif
 
-%if 0%{?with_python3}
+%if %{with_python3}
 pushd %{py3dir}
-%{__python3} setup.py install --skip-build --root %{buildroot}
+%{py3_install}
 popd
 %endif # with_python3
 
 
 
-%files
+%if %{with_python2}
+%files -n python2-%{pypi_name}
 %{!?_licensedir:%global license %doc} 
 %doc README.rst
 %license LICENSE.txt
-%{python_sitelib}/%{pypi_name}
-%{python_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
+%{python2_sitelib}/%{pypi_name}
+%{python2_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
+%endif
 
-%if 0%{?with_python3}
+%if %{with_python3}
 %files -n python%{python3_pkgversion}-%{pypi_name}
 %{!?_licensedir:%global license %doc} 
 %doc README.rst
