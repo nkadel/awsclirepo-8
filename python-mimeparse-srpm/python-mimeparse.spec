@@ -9,7 +9,7 @@
 Name:           python-%{pypi_name}
 Version:        0.1.4
 #Release:        1%%{?dist}
-Release:        0%{?dist}
+Release:        0.1%{?dist}
 Summary:        Python module for parsing mime-type names
 Group:          Development/Languages
 License:        MIT
@@ -44,7 +44,7 @@ cp -a . %{py3dir}
 %endif # with_python3
 
 %build
-CFLAGS="%{optflags}" %{__python} setup.py build
+CFLAGS="%{optflags}" %{__python2} setup.py build
 
 %if %{with_python3}
 pushd %{py3dir}
@@ -53,7 +53,7 @@ popd
 %endif # with_python3
 
 %check
-%{__python} mimeparse_test.py
+%{__python2} mimeparse_test.py
 
 %if %{with_python3}
 pushd %{py3dir}
@@ -71,11 +71,11 @@ pushd %{py3dir}
 popd
 %endif # with_python3
 
-%{__python} setup.py install --skip-build --root %{buildroot}
+%{__python2} setup.py install --skip-build --root %{buildroot}
 
 %files
 %doc README
-%{python_sitelib}/*
+%{python2_sitelib}/*
 
 %if %{with_python3}
 %files -n python%{python3_pkgversion}-%{pypi_name}
@@ -84,6 +84,10 @@ popd
 %endif # with_python3
 
 %changelog
+* Sun May 12 2019 Nico Kadel-Garcia <nkadel@gmail.com> - 0.1.4-0.1
+- Switch __python for __python2 and python_sitelib for python2_sitelib,
+  for new python macro standards and RHEL 8 compatibility
+
 * Sat May 18 2013 Pádraig Brady <P@draigBrady.com> - 0.1.4-1
 - Update to release 0.1.4
 
