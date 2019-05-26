@@ -18,7 +18,7 @@
 %global pypi_name botocore
 
 Name:           python-%{pypi_name}
-Version:        1.10.41
+Version:        1.12.156
 #Release:        4%%{?dist}
 Release:        0%{?dist}
 Summary:        Low-level, data-driven core of boto 3
@@ -169,6 +169,9 @@ nosetests-3.5 --with-coverage --cover-erase --cover-package botocore --with-xuni
 %endif # with docs
 
 %changelog
+* Sat May 25 2019 Fedora Release Engineering <releng@fedoraproject.org> - 1.12.156-0
+- Update to 1.12.156
+
 * Fri Jul 13 2018 Fedora Release Engineering <releng@fedoraproject.org> - 1.10.41-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
 
