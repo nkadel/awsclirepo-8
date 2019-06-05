@@ -7,16 +7,17 @@
 
 %global pypi_name awscli
 
-%global botocore_version 1.10.41
+%global botocore_version 1.12.135
 
 Name:           python-%{pypi_name}
-Version:        1.15.71
+Version:        1.16.166
 Release:        0%{?dist}
 Summary:        Universal Command Line Environment for AWS
 
 License:        ASL 2.0 and MIT
 URL:            http://aws.amazon.com/cli
-Source0:        https://pypi.io/packages/source/a/%{pypi_name}/%{pypi_name}-%{version}.tar.gz
+Source0:        https://files.pythonhosted.org/packages/source/a/%{pypi_name}/%{pypi_name}-%{version}.tar.gz
+Patch0:         relax-dependencies.patch
 BuildArch:      noarch
 
 %description
@@ -29,12 +30,15 @@ command line interface to Amazon Web Services.
 Summary:        Universal Command Line Environment for AWS
 BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-setuptools
+%if 0%{?rhel} > 7
+# bundled in python3-s3transfer for other releases
 Requires:       python%{python3_pkgversion}-botocore = %{botocore_version}
+%endif 
 Requires:       python%{python3_pkgversion}-colorama >= 0.2.5
 Requires:       python%{python3_pkgversion}-docutils >= 0.10
+Requires:       python%{python3_pkgversion}-pyyaml >= 3.10
 Requires:       python%{python3_pkgversion}-rsa >= 3.1.2
 Requires:       python%{python3_pkgversion}-s3transfer >= 0.1.9
-Requires:       python%{python3_pkgversion}-PyYAML >= 3.10
 %if 0%{?fedora}
 Recommends: bash-completion
 Recommends: zsh
@@ -51,14 +55,21 @@ command line interface to Amazon Web Services.
 Summary:        Universal Command Line Environment for AWS
 BuildRequires:  python2-devel
 BuildRequires:  python2-setuptools
+%if 0%{?rhel} > 7
+# bundled in python2-s3transfer for other releases
 Requires:       python2-botocore = %{botocore_version}
+%endif
 Requires:       python2-colorama >= 0.2.5
 Requires:       python2-docutils >= 0.10
 Requires:       python2-rsa >= 3.1.2
 Requires:       python2-s3transfer >= 0.1.9
-# Misnamed for python2
-#Requires:       python2-PyYAML >= 3.10
+
+# PyYAML is a misname by fedora and most RHEL
+%if 0%{rhel} = 6 || 0%{rhel} = 8
+Requires:	python2-pyyaml >= 3.10
+%else
 Requires:       PyYAML >= 3.10
+%endif # rhel = 6 || rhel = 8
 %if 0%{?fedora}
 Recommends: bash-completion
 Recommends: zsh
@@ -139,6 +150,13 @@ rm %{buildroot}%{_bindir}/aws.cmd
 %endif # with python2
 
 %changelog
+* Sat May 25 2019 Nico Kadel-Garcia <nkadel@gmail.com> - 1.6.166-0
+- Update to 1.6.166
+
+* Sun May 12 2019 Nico Kadel-Garcia <nkadel@gmail.com> - 1.15.71-1
+- Port to RHEL 8
+- Use python-pyyaml naming instead of PyYAML dependencies where possible
+
 * Sun Aug 05 2018 Kevin Fenzi <kevin@scrye.com> - 1.15.71-1
 - Update to 1.15.71. Fixes bug #1612393
 
