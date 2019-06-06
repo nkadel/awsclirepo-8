@@ -11,29 +11,9 @@
 REPOBASE = file://$(PWD)
 #REPOBASE = http://localhost
 
-# Placeholder RPMs for python2-foo packages to include python-foo
-#EPELPKGS+=python2-Cython-srpm
-#EPELPKGS+=python2-contextlib2-srpm
-#EPELPKGS+=python2-d2to1-srpm
-#EPELPKGS+=python2-dateutil-srpm
-#EPELPKGS+=python2-extras-srpm
-#EPELPKGS+=python2-fixtures-srpm
-#EPELPKGS+=python2-linecache2-srpm
-#EPELPKGS+=python2-mimeparse-srpm
-#EPELPKGS+=python2-pbr-srpm
-#EPELPKGS+=python2-pyasn1-srpm
-#EPELPKGS+=python2-testtools-srpm
-#EPELPKGS+=python2-unittest2-srpm
-
 # Build python3 versions of packages
 EPELPKGS+=python-botocore-srpm
-#EPELPKGS+=python-d2to1-srpm
-#EPELPKGS+=python-extras-srpm
-#EPELPKGS+=python-jmespath-srpm
-#EPELPKGS+=python-mimeparse-srpm
-#EPELPKGS+=python-pyyaml-srpm
-#EPELPKGS+=python-unittest2-srpm
-#EPELPKGS+=python3-dateutil-srpm
+
 EPELPKGS+=python3-fixtures-srpm
 
 # Actually compilable with epel-6-x86_64
@@ -43,14 +23,6 @@ EPELPKGS+=python-awscli-srpm
 AWSCLIPKGS+=python-colorama-srpm
 
 AWSCLIPKGS+=python3-rsa-srpm
-
-#AWSCLIPKGS+=python3-testtools-srpm
-#AWSCLIPKGS+=python3-pbr-srpm
-
-#AWSCLIPKGS+=python3-s3transfer-srpm
-
-# dependencies
-#AWSCLIPKGS+=python-linecache2-srpm
 
 REPOS+=awsclirepo/el/8
 
@@ -80,12 +52,6 @@ build:: FORCE
 	     (cd $$name; $(MAKE) $(MFLAGS) $@); \
 	done
 
-# Dependencies
-#python-awscli-srpm::
-
-#python-linecacwe-srpm:: python-fixtures-srpm
-#python-linecacwe-srpm:: python-unittest2-srpm
-
 # Actually build in directories
 $(EPELPKGS):: FORCE
 	(cd $@; $(MAKE) $(MLAGS) install)
@@ -101,7 +67,6 @@ $(REPOS):
 $(REPODIRS): $(REPOS)
 	@install -d -m 755 `dirname $@`
 	/usr/bin/createrepo -q `dirname $@`
-
 
 .PHONY: cfg cfgs
 cfg cfgs:: $(CFGS) $(MOCKCFGS)
@@ -145,7 +110,6 @@ awsclirepo.repo:: Makefile awsclirepo.repo.in
 
 awsclirepo.repo:: FORCE
 	cmp -s /etc/yum.repos.d/$@ $@       
-
 
 nginx:: nginx/default.d/awsclirepo.conf
 
