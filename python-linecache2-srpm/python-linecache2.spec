@@ -36,7 +36,7 @@ BuildRequires:  python%{python3_pkgversion}-pbr
 # Test dependencies
 BuildRequires:  python%{python3_pkgversion}-fixtures
 # Tests are broken for non on RHEL 6
-#BuildRequires:  python%{python3_pkgversion}-unittest2
+#BuildRequires:  python%%{python3_pkgversion}-unittest2
 %endif # with python3
 
 %description
@@ -105,22 +105,22 @@ popd
 
 
 # IGNORE TESTS, AMAZINGLY BROKEN ON RHEL 6 for now
-#%check
-#%if %{with python2}
+#%%check
+#%%if %%{with python2}
 #pushd python2
-#mv ../tests %{pypi_name}/
-#%{__python2} -m unittest2 -v
-#mv %{pypi_name}/tests ../
+#mv ../tests %%{pypi_name}/
+#%%{__python2} -m unittest2 -v
+#mv %%{pypi_name}/tests ../
 #popd
-#%endif
+#%%endif
 
-#%if %{with python3}
+#%%if %%{with python3}
 #pushd python3
-#mv ../tests %{pypi_name}/
-#%{__python3} -m unittest2 -v
-#mv %{pypi_name}/tests ../
+#mv ../tests %%{pypi_name}/
+#%%{__python3} -m unittest2 -v
+#mv %%{pypi_name}/tests ../
 #popd
-#%endif
+#%%endif
 
 %if %{with python2}
 %files -n python2-%{pypi_name}

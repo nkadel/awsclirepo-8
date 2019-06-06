@@ -22,10 +22,10 @@ Building awscli
 Build on a RHEL or CentOS 6 with EPEL enabled, or use mock.
 
 * make cfgs # Create local .cfg configs for "mock".
-* * epel-6-x86_64.cfg # Used for some Makefiles
+* * epel-8-x86_64.cfg # Used for some Makefiles
 
 * make repos # Creates local local yum repositories in $PWD/awsclirepo
-* * awsclirepo/el/6
+* * awsclirepo/el/8
 
 * make # Make all distinct versions using "mock"
 
