@@ -1,5 +1,5 @@
-awsclirepo
-==========
+awsclirepo-8
+============
 
 Wrapper for SRPM building tools for awscli on RHEL 8. RHEL 7 has working
 awscli published via EPEL, and Fedora has it built in.
