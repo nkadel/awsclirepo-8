@@ -1,9 +1,9 @@
---- awscli-1.16.145-orig/setup.py	2019-04-24 19:41:07.000000000 +0000
-+++ awscli-1.16.145/setup.py	2019-04-25 04:34:00.807033198 +0000
+--- awscli-1.16.167-orig/setup.py	2019-05-29 00:37:16.074441413 +0000
++++ awscli-1.16.167/setup.py	2019-05-29 01:00:07.938855836 +0000
 @@ -24,11 +24,11 @@ def find_version(*file_paths):
  
  
- requires = ['botocore==1.12.135',
+ requires = ['botocore==1.12.157',
 -            'colorama>=0.2.5,<=0.3.9',
 +            'colorama>=0.2.5',
              'docutils>=0.10',

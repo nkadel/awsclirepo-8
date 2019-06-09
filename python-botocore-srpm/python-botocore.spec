@@ -10,14 +10,14 @@
 %global pypi_name botocore
 
 Name:           python-%{pypi_name}
-Version:        1.12.135
-#Release:        1*%%{?dist}
+Version:        1.12.157
+#Release:        1%%{?dist}
 Release:        0%{?dist}
 Summary:        Low-level, data-driven core of boto 3
 
 License:        ASL 2.0
 URL:            https://github.com/boto/botocore
-Source:         https://files.pythonhosted.org/packages/source/b/botocore/botocore-%{version}.tar.gz
+Source:         https://pypi.io/packages/source/b/%{pypi_name}/%{pypi_name}-%{version}.tar.gz
 Patch0:         0002-Fix-date-util-version-for-EL7.patch
 BuildArch:      noarch
 
@@ -93,6 +93,14 @@ nosetests-3 --with-coverage --cover-erase --cover-package botocore --with-xunit 
 %endif # with docs
 
 %changelog
+* Sun Jun 9 2019 Nico Kadel-Garcia <nkadel@gmail.com> - 1.12.157-0
+- BBackport to RHEL 8
+
+* Tue May 28 2019 David Duncan <davdunc@amazon.com> - 1.12.157-1
+- Bumping to version 1.12.157
+- resolves #1677950
+- update to latest endpoints and models
+
 * Wed Apr 24 2019 David Duncan <dadvunc@amazon.com> - 1.12.135-1
 - Bumping version to 1.12.135
 - add support for ap-east-1

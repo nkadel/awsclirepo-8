@@ -7,10 +7,10 @@
 
 %global pypi_name awscli
 
-%global botocore_version 1.12.135
+%global botocore_version 1.12.157
 
 Name:           python-%{pypi_name}
-Version:        1.16.166
+Version:        1.16.167
 Release:        0%{?dist}
 Summary:        Universal Command Line Environment for AWS
 
@@ -39,7 +39,7 @@ Requires:       python%{python3_pkgversion}-docutils >= 0.10
 Requires:       python%{python3_pkgversion}-pyyaml >= 3.10
 Requires:       python%{python3_pkgversion}-rsa >= 3.1.2
 Requires:       python%{python3_pkgversion}-s3transfer >= 0.1.9
-%if 0%{?fedora}
+%if ! (0%{?rhel} && 0%{?rhel} <= 7)
 Recommends: bash-completion
 Recommends: zsh
 %endif # Fedora
@@ -150,12 +150,48 @@ rm %{buildroot}%{_bindir}/aws.cmd
 %endif # with python2
 
 %changelog
-* Sat May 25 2019 Nico Kadel-Garcia <nkadel@gmail.com> - 1.6.166-0
-- Update to 1.6.166
-
-* Sun May 12 2019 Nico Kadel-Garcia <nkadel@gmail.com> - 1.15.71-1
+* Sun Jun 9 2019 Nico Kadel-Garcia <nkadel@gmail.com> - 1.16.167-0
 - Port to RHEL 8
 - Use python-pyyaml naming instead of PyYAML dependencies where possible
+
+* Tue May 28 2019 David Duncan <davdunc@amazon.com> - 1.16.167-1
+- Update to 1.16.167
+- Add updates and fixes
+
+* Wed Apr 24 2019 David Duncan <davdunc@amazon.com> - 1.16.145-1
+- Adding support for ap-east-1 
+
+* Thu Mar 21 2019 David Duncan <davdunc@amazon.com> - 1.16.129-1
+- Bumping version to 1.16.129
+
+* Sat Feb 23 2019 Igor Gnatenko <ignatenkobrain@fedoraproject.org> - 1.16.111-1
+- Update to 1.16.111
+
+* Mon Feb 11 2019 David Duncan <davdunc@amazon.com> - 1.16.101
+- api-change:ecs: Update ecs command to latest version
+- api-change:discovery: Update discovery command to latest version
+- api-change:dlm: Update dlm command to latest version
+
+* Thu Jan 31 2019 Fedora Release Engineering <releng@fedoraproject.org> - 1.16.85-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
+
+* Fri Jan 11 2019 Igor Gnatenko <ignatenkobrain@fedoraproject.org> - 1.16.85-2
+- Enable python dependency generator
+
+* Mon Nov 19 2018 David Duncan <davdunc@amazon.com> - 1.16.57-1
+- Update to 1.16.57. Fixes bug #1613078
+
+* Tue Nov 06 2018 Carl George <carl@george.computer> - 1.16.28-3
+- Add patch0 to relax dependencies
+
+* Wed Oct 17 2018 Justin W. Flory <jflory7@fedoraproject.org> - 1.16.28-2
+- Add groff dependency, fix 'aws help' issue in stock install
+
+* Sun Oct 07 2018 David Duncan <davdunc@amazon.com> - 1.16.28
+- Update to 1.16.28
+
+* Sun Sep 02 2018 David Duncan <davdunc@amazon.com> - 1.15.72-1
+- Update to 1.15.72. Updates bug #1613078
 
 * Sun Aug 05 2018 Kevin Fenzi <kevin@scrye.com> - 1.15.71-1
 - Update to 1.15.71. Fixes bug #1612393
